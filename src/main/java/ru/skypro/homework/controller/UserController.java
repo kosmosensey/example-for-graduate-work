@@ -28,10 +28,10 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<User> getUser() {
-        User user = userService.getLoggedInUser();
-        if (user != null) {
-            return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<UserDto> getUser() {
+        UserDto userDto = userService.getLoggedInUser();
+        if (userDto != null) {
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -39,8 +39,8 @@ public class UserController {
 
     @PatchMapping("/me")
     public ResponseEntity<UpdateUser> updateUser(@RequestBody UpdateUser updateUser) {
-        User updatedUser = userService.updateUserDetails(updateUser);
-        if (updatedUser != null) {
+        UserDto updatedUserDto = userService.updateUserDetails(updateUser);
+        if (updatedUserDto != null) {
             return new ResponseEntity<>(updateUser, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

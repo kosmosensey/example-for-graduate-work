@@ -3,11 +3,11 @@ package ru.skypro.homework.dto.ads;
 import lombok.Data;
 
 @Data
-public class Ad {
-    private int author;
+public class AdDto {
+    private Integer author;
     private String image;
-    private int pk;
-    private int price;
+    private Integer pk;
+    private Integer price;
     private String title;
 
 }

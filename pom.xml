@@ -13,13 +13,12 @@
 
   <groupId>ru.skypro</groupId>
   <artifactId>ads</artifactId>
-  <version>0.0.1-SNAPSHOT</version
-  >
+  <version>0.0.1-SNAPSHOT</version>
   <name>Ads application</name>
   <description>Application for managing ads</description>
 
   <properties>
-    <java.version>11</java.version>
+    <java.version>17</java.version>
   </properties>
 
   <dependencies>
