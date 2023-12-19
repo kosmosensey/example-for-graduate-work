@@ -11,7 +11,6 @@ import ru.skypro.homework.dto.ads.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,11 +27,11 @@ public class AdsController {
     }
 
     @PostMapping
-    public ResponseEntity<Ad> addAd(@RequestParam("image") String image, @RequestBody CreateOrUpdateAd ad) {
+    public ResponseEntity<AdDto> addAd(@RequestPart("image") MultipartFile image, @RequestPart("ad") CreateOrUpdateAd ad) {
         // логика
         if (image != null && ad != null) { // условие проверки наличия авторизации
-            Ad newAd = null; //  добавления объявления
-            return new ResponseEntity<>(newAd, HttpStatus.CREATED);
+            AdDto newAdDto = null; //  добавления объявления
+            return new ResponseEntity<>(newAdDto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
