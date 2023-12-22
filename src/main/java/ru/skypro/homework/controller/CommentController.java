@@ -15,8 +15,8 @@ public class CommentController {
     //Получение комментариев объявления
     @GetMapping("/{id}/comments")
 
-    public ResponseEntity<Comments> getComments(@PathVariable("id") Integer id) {
-        Comments comments = null;// получение комментариев объявления по id
+    public ResponseEntity<CommentsDTO> getComments(@PathVariable("id") Integer id) {
+        CommentsDTO comments = null;// получение комментариев объявления по id
         if (comments != null) {
             return new ResponseEntity<>(comments, HttpStatus.OK);
         } else {
@@ -26,10 +26,10 @@ public class CommentController {
 
     //Добавление комментария к объявлению
     @PostMapping ("/{id}/comments")
-    public ResponseEntity<Comment> addComment(@PathVariable("id") Integer id,
-                                              @RequestBody CreateOrUpdateComment comment) {
+    public ResponseEntity<CommentDTO> addComment(@PathVariable("id") Integer id,
+                                                 @RequestBody CreateOrUpdateCommentDTO comment) {
         if (id != null && comment != null) { // проверка
-            Comment newComment = null; //  добавление комментария
+            CommentDTO newComment = null; //  добавление комментария
             return new ResponseEntity<>(newComment, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -49,9 +49,9 @@ public class CommentController {
 // Обновление комментария
 
     @PatchMapping ("/{adId}/comments/{commentId}")
-    public ResponseEntity<Comment> updateComment(@PathVariable("adId") int adId,
-                                                 @PathVariable("commentId") int commentId){
-        Comment updatedComment = new Comment();
+    public ResponseEntity<CommentDTO> updateComment(@PathVariable("adId") int adId,
+                                                    @PathVariable("commentId") int commentId){
+        CommentDTO updatedComment = new CommentDTO();
         return ResponseEntity.ok(updatedComment);
 
         }

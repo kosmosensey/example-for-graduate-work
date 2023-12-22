@@ -2,12 +2,14 @@ package ru.skypro.homework.entities;
 
 import liquibase.pro.packaged.I;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "comments")
 public class Comment {
     @Id

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class Comments {
+public class CommentsDTO {
     private int count;
-    private List<Comment> results;
+    private List<CommentDTO> results;
 }

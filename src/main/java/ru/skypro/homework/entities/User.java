@@ -1,13 +1,13 @@
 package ru.skypro.homework.entities;
 
 import lombok.Data;
-import lombok.Getter;
-import ru.skypro.homework.enums.Role;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
     @Id
