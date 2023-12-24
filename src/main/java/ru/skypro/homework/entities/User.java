@@ -2,7 +2,6 @@ package ru.skypro.homework.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skypro.homework.enums.Role;
 
 import javax.persistence.*;
 
