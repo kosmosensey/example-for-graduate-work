@@ -9,7 +9,6 @@ public class AdMapper {
     public Ad adDtoToAd(AdDto adDto) {
         Ad ad = new Ad();
         ad.setPk(adDto.getPk());
-        ad.setAuthor(adDto.getAuthor());
         ad.setTitle(adDto.getTitle());
         ad.setImage(adDto.getImage());
         ad.setPrice(adDto.getPrice());
@@ -19,7 +18,7 @@ public class AdMapper {
     public  AdDto adToAdDto(Ad ad) {
         AdDto adDto = new AdDto();
         adDto.setPk(ad.getPk());
-        adDto.setAuthor(ad.getAuthor());
+        adDto.setAuthor(ad.getAuthor().getId());
         adDto.setTitle(ad.getTitle());
         adDto.setImage(ad.getImage());
         adDto.setPrice(ad.getPrice());

@@ -12,14 +12,17 @@ import javax.persistence.*;
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer pk;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "author_id")
-    private Integer author;
-    User user;
+    @ManyToOne
+    @JoinColumn(name = "author")
+    private User author;
     @Column(name = "description")
     private String description;
+    @Column(name = "image")
     private String image;
+    @Column(name = "price")
     private Integer price;
+    @Column(name = "title")
     private String title;
 }

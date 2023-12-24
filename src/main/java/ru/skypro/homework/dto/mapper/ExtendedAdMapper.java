@@ -20,12 +20,12 @@ public class ExtendedAdMapper {
     public ExtendedAdDto toDto(Ad entity) {
         ExtendedAdDto dto = new ExtendedAdDto();
         dto.setPk(entity.getPk());
-        dto.setAuthorFirstName(entity.getUser().getFirstName());
-        dto.setAuthorLastName(entity.getUser().getLastName());
+        dto.setAuthorFirstName(entity.getAuthor().getFirstName());
+        dto.setAuthorLastName(entity.getAuthor().getLastName());
         dto.setDescription(entity.getDescription());
-        dto.setEmail(entity.getUser().getEmail());
+        dto.setEmail(entity.getAuthor().getEmail());
         dto.setImage(entity.getImage());
-        dto.setPhone(entity.getUser().getPhone());
+        dto.setPhone(entity.getAuthor().getPhone());
         dto.setPrice(entity.getPrice());
         dto.setTitle(entity.getTitle());
 

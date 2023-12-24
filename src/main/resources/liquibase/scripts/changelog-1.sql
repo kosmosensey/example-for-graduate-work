@@ -4,36 +4,30 @@
 create table users
 (
     id INTEGER not null primary key,
-    email varchar(50),
-    first_name  varchar(255),
-    last_name   varchar(255),
-    phone varchar(11),
-    role varchar(10),
-    image varchar(255),
-    user_name varchar(255),
-    password varchar(255)
+    email TEXT,
+    first_name  TEXT,
+    last_name   TEXT,
+    phone TEXT,
+    role TEXT,
+    image TEXT,
+    user_name TEXT,
+    password TEXT
 );
 
 create table ads
 (
-    pk INTEGER not null primary key,
-    author_id Integer,
-    title   varchar(255),
-    description varchar(255),
+    id INTEGER not null primary key,
+    title   TEXT,
+    description TEXT,
     price Integer,
-    image varchar(255),
-    FOREIGN KEY (author_id) REFERENCES users(id)
+    image TEXT,
+    author Integer REFERENCES users(id)
 );
 
 create table comments
 (
-    pk INTEGER not null primary key,
-    description varchar(255),
-    author Integer,
-    author_image varchar(255),
-    author_first_name varchar(255),
+    id INTEGER not null primary key,
     created_at Integer,
-    text varchar(255),
-    FOREIGN KEY (author) REFERENCES users(id)
+    text TEXT,
+    author Integer REFERENCES users(id)
 );
-

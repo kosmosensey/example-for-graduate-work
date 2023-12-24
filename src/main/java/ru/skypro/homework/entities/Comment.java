@@ -12,13 +12,13 @@ import javax.persistence.*;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer pk;
-    private Integer author;
-    @Column(name = "author_image")
-    private String authorImage;
-    @Column(name = "author_first_name")
-    private String authorFirstName;
+    @ManyToOne
+    @JoinColumn(name = "author")
+    private User author;
     @Column(name = "created_at")
     private Integer createdAt;
+    @Column(name = "text")
     private String text;
 }
