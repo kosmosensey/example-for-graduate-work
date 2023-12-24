@@ -7,7 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.ads.*;
+import ru.skypro.homework.dto.AdDto;
+import ru.skypro.homework.dto.AdsDto;
+import ru.skypro.homework.dto.CreateOrUpdateAdDto;
+import ru.skypro.homework.dto.ExtendedAdDto;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -20,14 +23,14 @@ import java.util.List;
 public class AdsController {
 
     @GetMapping
-    public ResponseEntity<AdsDTO> getAllAds() {
+    public ResponseEntity<AdsDto> getAllAds() {
         //  логика
-        AdsDTO ads = null;// получения всех объявлений
+        AdsDto ads = null;// получения всех объявлений
         return new ResponseEntity<>(ads, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<AdDto> addAd(@RequestPart("image") MultipartFile image, @RequestPart("ad") CreateOrUpdateAdDTO ad) {
+    public ResponseEntity<AdDto> addAd(@RequestPart("image") MultipartFile image, @RequestPart("ad") CreateOrUpdateAdDto ad) {
         // логика
         if (image != null && ad != null) { // условие проверки наличия авторизации
             AdDto newAdDto = null; //  добавления объявления

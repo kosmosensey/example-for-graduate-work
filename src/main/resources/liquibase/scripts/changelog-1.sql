@@ -3,30 +3,36 @@
 --changeset mavile:1
 create table users
 (
-    id bigserial not null primary key,
+    id INTEGER not null primary key,
     email varchar(50),
     first_name  varchar(255),
     last_name   varchar(255),
     phone varchar(11),
     role varchar(10),
-    image varchar(255)
+    image varchar(255),
+    user_name varchar(255),
+    password varchar(255)
 );
+
 create table ads
 (
-    pk bigserial not null primary key,
-    author_id bigint,
+    pk INTEGER not null primary key,
+    author_id Integer,
     title   varchar(255),
-    price int,
+    description varchar(255),
+    price Integer,
     image varchar(255),
     FOREIGN KEY (author_id) REFERENCES users(id)
 );
+
 create table comments
 (
-    pk bigserial not null primary key,
-    author bigint,
+    pk INTEGER not null primary key,
+    description varchar(255),
+    author Integer,
     author_image varchar(255),
     author_first_name varchar(255),
-    created_at timestamp,
+    created_at Integer,
     text varchar(255),
     FOREIGN KEY (author) REFERENCES users(id)
 );

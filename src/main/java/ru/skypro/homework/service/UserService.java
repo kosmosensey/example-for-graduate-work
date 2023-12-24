@@ -1,10 +1,10 @@
 package ru.skypro.homework.service;
 
-import ru.skypro.homework.dto.users.UpdateUser;
-import ru.skypro.homework.dto.users.UserDto;
+import ru.skypro.homework.dto.UpdateUserDto;
+import ru.skypro.homework.dto.UserDto;
 
 public interface UserService {
     UserDto getLoggedInUser();
 
-    UserDto updateUserDetails(UpdateUser updateUser);
+    UserDto updateUserDetails(UpdateUserDto updateUser);
 }
