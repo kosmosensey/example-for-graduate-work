@@ -1,14 +1,15 @@
-package ru.skypro.homework.dto.users;
+package ru.skypro.homework.dto;
 
 import lombok.Data;
+import ru.skypro.homework.enums.Role;
 
 @Data
 public class UserDto {
-    private int id;
+    private Integer id;
     private String email;
     private String firstName;
     private String lastName;
     private String phone;
-    private String role;
+    private Role role;
     private String image;
 }

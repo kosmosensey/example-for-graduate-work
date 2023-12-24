@@ -7,7 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.ads.*;
+import ru.skypro.homework.dto.AdDto;
+import ru.skypro.homework.dto.AdsDto;
+import ru.skypro.homework.dto.CreateOrUpdateAdDto;
+import ru.skypro.homework.dto.ExtendedAdDto;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -20,14 +23,14 @@ import java.util.List;
 public class AdsController {
 
     @GetMapping
-    public ResponseEntity<Ads> getAllAds() {
+    public ResponseEntity<AdsDto> getAllAds() {
         //  логика
-        Ads ads = null;// получения всех объявлений
+        AdsDto ads = null;// получения всех объявлений
         return new ResponseEntity<>(ads, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<AdDto> addAd(@RequestPart("image") MultipartFile image, @RequestPart("ad") CreateOrUpdateAd ad) {
+    public ResponseEntity<AdDto> addAd(@RequestPart("image") MultipartFile image, @RequestPart("ad") CreateOrUpdateAdDto ad) {
         // логика
         if (image != null && ad != null) { // условие проверки наличия авторизации
             AdDto newAdDto = null; //  добавления объявления
@@ -37,8 +40,8 @@ public class AdsController {
         }
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAd> getAdById(@PathVariable("id") int id) {
-        ExtendedAd ad = null;// получения объявления по id
+    public ResponseEntity<ExtendedAdDto> getAdById(@PathVariable("id") int id) {
+        ExtendedAdDto ad = null;// получения объявления по id
         if (ad != null) {
             return new ResponseEntity<>(ad, HttpStatus.OK);
         } else {
@@ -46,8 +49,8 @@ public class AdsController {
         }
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<ExtendedAd> removeAd(@PathVariable Long id) {
-        ExtendedAd ad = null;// получения объявления по id
+    public ResponseEntity<ExtendedAdDto> removeAd(@PathVariable Long id) {
+        ExtendedAdDto ad = null;// получения объявления по id
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         //            реализовать
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -56,8 +59,8 @@ public class AdsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ExtendedAd> updateAd(@PathVariable Long id, @RequestBody ExtendedAd extendedAd) {
-        ExtendedAd ad = null;// получения объявления по id
+    public ResponseEntity<ExtendedAdDto> updateAd(@PathVariable Long id, @RequestBody ExtendedAdDto extendedAd) {
+        ExtendedAdDto ad = null;// получения объявления по id
         if (ad != null) {
             return new ResponseEntity<>(ad, HttpStatus.OK);
         } else {
@@ -70,8 +73,8 @@ public class AdsController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<ExtendedAd>> getAdsMe() {
-        List<ExtendedAd> emptyListOfAds = new ArrayList<>();
+    public ResponseEntity<List<ExtendedAdDto>> getAdsMe() {
+        List<ExtendedAdDto> emptyListOfAds = new ArrayList<>();
         if (emptyListOfAds.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
@@ -83,7 +86,7 @@ public class AdsController {
 
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<String>> updateImage(@PathVariable Long id, @RequestParam MultipartFile image) throws IOException {
-        ExtendedAd ad = null;
+        ExtendedAdDto ad = null;
         if (ad == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {

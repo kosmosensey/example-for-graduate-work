@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.users.*;
+import ru.skypro.homework.dto.NewPasswordDto;
+import ru.skypro.homework.dto.UpdateUserDto;
+import ru.skypro.homework.dto.UserDto;
 
 import ru.skypro.homework.service.*;
 
@@ -19,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/set_password")
-    public ResponseEntity<Void> setPassword(@RequestBody NewPassword newPassword) {
+    public ResponseEntity<Void> setPassword(@RequestBody NewPasswordDto newPassword) {
         if (isValidPassword(newPassword)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -38,7 +40,7 @@ public class UserController {
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<UpdateUser> updateUser(@RequestBody UpdateUser updateUser) {
+    public ResponseEntity<UpdateUserDto> updateUser(@RequestBody UpdateUserDto updateUser) {
         UserDto updatedUserDto = userService.updateUserDetails(updateUser);
         if (updatedUserDto != null) {
             return new ResponseEntity<>(updateUser, HttpStatus.OK);
@@ -55,7 +57,7 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-    private boolean isValidPassword(NewPassword newPassword) {
+    private boolean isValidPassword(NewPasswordDto newPassword) {
         return newPassword.getCurrentPassword().length() >= 8
                && newPassword.getNewPassword().length() >= 8; // Проверка длины
     }
