@@ -1,5 +1,6 @@
 package ru.skypro.homework.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDto;
-import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
+import ru.skypro.homework.service.impl.AdServiceImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -19,37 +20,43 @@ import java.util.List;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/ads")
 public class AdsController {
+    private final AdServiceImpl adService;
+
 
     @GetMapping
-    public ResponseEntity<AdsDto> getAllAds() {
+    public ResponseEntity<List<AdDto>> getAllAds() {
         //  логика
-        AdsDto ads = null;// получения всех объявлений
-        return new ResponseEntity<>(ads, HttpStatus.OK);
+        if (!adService.getAllAds().isEmpty()) {
+            return new ResponseEntity<>(adService.getAllAds(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
     public ResponseEntity<AdDto> addAd(@RequestPart("image") MultipartFile image, @RequestPart("ad") CreateOrUpdateAdDto ad) {
         // логика
         if (image != null && ad != null) { // условие проверки наличия авторизации
-            AdDto newAdDto = null; //  добавления объявления
-            return new ResponseEntity<>(newAdDto, HttpStatus.CREATED);
+            return new ResponseEntity<>(adService.createAd(ad), HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAdDto> getAdById(@PathVariable("id") int id) {
+    public ResponseEntity<ExtendedAdDto> getAdById(@PathVariable("id") Long id) {
         ExtendedAdDto ad = null;// получения объявления по id
-        if (ad != null) {
-            return new ResponseEntity<>(ad, HttpStatus.OK);
+        if (adService.findExtendedAd(id) != null) {
+            return new ResponseEntity<>(adService.findExtendedAd(id), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<ExtendedAdDto> removeAd(@PathVariable Long id) {
+        adService.delete(id);
         ExtendedAdDto ad = null;// получения объявления по id
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         //            реализовать
@@ -60,25 +67,23 @@ public class AdsController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<ExtendedAdDto> updateAd(@PathVariable Long id, @RequestBody ExtendedAdDto extendedAd) {
-        ExtendedAdDto ad = null;// получения объявления по id
-        if (ad != null) {
-            return new ResponseEntity<>(ad, HttpStatus.OK);
+        if (adService.findExtendedAd(id) != null) {
+            return new ResponseEntity<>(adService.updateExtendedAd(extendedAd), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-//            реализовать
+        //            реализовать
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 //            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @GetMapping("/me")
-    public ResponseEntity<List<ExtendedAdDto>> getAdsMe() {
-        List<ExtendedAdDto> emptyListOfAds = new ArrayList<>();
-        if (emptyListOfAds.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ResponseEntity<List<AdDto>> getAdsMe() {
+        if (!adService.getAllAds().isEmpty()) {
+            return new ResponseEntity<>(adService.getAllAds(), HttpStatus.OK);
         } else {
-            return ResponseEntity.ok(emptyListOfAds);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 //            реализовать
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

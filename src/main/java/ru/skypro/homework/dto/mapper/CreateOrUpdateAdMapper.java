@@ -14,7 +14,7 @@ public class CreateOrUpdateAdMapper {
         return dto;
     }
 
-    public Ad mapToAd(CreateOrUpdateAdDto dto) {
+    public static Ad mapToAd(CreateOrUpdateAdDto dto) {
         Ad entity = new Ad();
         entity.setTitle(dto.getTitle());
         entity.setPrice(dto.getPrice());
