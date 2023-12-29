@@ -7,4 +7,6 @@ public interface UserService {
     UserDto getLoggedInUser();
 
     UserDto updateUserDetails(UpdateUserDto updateUser);
+
+    UserDto findByEmail(String email);
 }
