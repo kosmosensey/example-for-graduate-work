@@ -2,7 +2,9 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.dto.*;
+import ru.skypro.homework.dto.mapper.UpdateUserMapper;
 import ru.skypro.homework.dto.mapper.UserDtoMapper;
 import ru.skypro.homework.entities.User;
 import ru.skypro.homework.exception.UserNotFoundException;
@@ -16,26 +18,23 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
+    private final UpdateUserMapper updateUserMapper;
 
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(UserDtoMapper::mapToUserDto)
+                .map(userDtoMapper::mapToUserDto)
                 .toList();
     }
 
-    public UserDto createUser(UserDto adDto) {
-        return UserDtoMapper.mapToUserDto(userRepository.save(userDtoMapper.mapToUser(adDto)));
+    public UserDto createUser(UserDto userDto) {
+        return userDtoMapper.mapToUserDto(userRepository.save(userDtoMapper.mapToUser(userDto)));
     }
 
-    public UserDto updateUser(UserDto adDto) {
-        return UserDtoMapper.mapToUserDto(userRepository.save(userDtoMapper.mapToUser(adDto)));
+    public UserDto findUser(Integer id) {
+        return userDtoMapper.mapToUserDto(userRepository.findById(id).get());
     }
 
-    public UserDto findUser(Long id) {
-        return UserDtoMapper.mapToUserDto(userRepository.findById(id).get());
-    }
-
-    public void deleteUser(Long id) {
+    public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }
     @Override
@@ -45,11 +44,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUserDetails(UpdateUserDto updateUser) {
-        return null;
+        return userDtoMapper.mapToUserDto(userRepository.save(updateUserMapper.mapToUser(updateUser)));
+    }
+    @Override
+    @Transactional
+    public UserDto updateUser(Integer id, UpdateUserDto updateUser) {
+
+        User user = userRepository.findById(id).get();
+        if (userRepository.updateSomeFields(updateUser.getFirstName(), updateUser.getLastName(), updateUser.getPhone(), user.getId()) > 0) {
+            return userDtoMapper.mapToUserDto(userRepository.findById(id).get());
+        } else {
+            throw new RuntimeException("Данные не изменились");
+        }
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userDtoMapper.mapToUserDto(userRepository.save(user));
     }
     @Override
     public UserDto findByEmail(String email) {
         User findedUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        return UserDtoMapper.mapToUserDto(findedUser);
+        return userDtoMapper.mapToUserDto(findedUser);
     }
 }

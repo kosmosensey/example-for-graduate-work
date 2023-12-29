@@ -1,6 +1,7 @@
 package ru.skypro.homework.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +21,8 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin(value = "http://localhost:3000")
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/ads")
 public class AdsController {
@@ -36,8 +39,9 @@ public class AdsController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<AdDto> addAd(@RequestPart("image") MultipartFile image, @RequestPart("ad") CreateOrUpdateAdDto ad) {
+    @PostMapping()
+    public ResponseEntity<AdDto> addAd(@RequestParam("ad") CreateOrUpdateAdDto ad, @RequestPart("image") MultipartFile image) {
+        log.info("Adding ad with title: {}", ad.getTitle());
         // логика
         if (image != null && ad != null) { // условие проверки наличия авторизации
             return new ResponseEntity<>(adService.createAd(ad), HttpStatus.CREATED);

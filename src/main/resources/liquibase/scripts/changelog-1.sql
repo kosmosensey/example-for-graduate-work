@@ -3,7 +3,7 @@
 --changeset mavile:1
 create table users
 (
-    id INTEGER not null primary key,
+    id serial not null primary key,
     email TEXT,
     first_name  TEXT,
     last_name   TEXT,
@@ -16,7 +16,7 @@ create table users
 
 create table ads
 (
-    id INTEGER not null primary key,
+    id serial not null primary key,
     title   TEXT,
     description TEXT,
     price Integer,
@@ -26,7 +26,7 @@ create table ads
 
 create table comments
 (
-    id INTEGER not null primary key,
+    id serial not null primary key,
     created_at Integer,
     text TEXT,
     author Integer REFERENCES users(id)

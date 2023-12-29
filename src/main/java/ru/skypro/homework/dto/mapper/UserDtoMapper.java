@@ -6,7 +6,7 @@ import ru.skypro.homework.entities.User;
 
 @Component
 public class UserDtoMapper {
-    public static UserDto mapToUserDto(User entity) {
+    public UserDto mapToUserDto(User entity) {
         UserDto dto = new UserDto();
         dto.setId(entity.getId());
         dto.setEmail(entity.getEmail());
