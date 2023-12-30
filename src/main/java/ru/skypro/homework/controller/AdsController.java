@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDto;
+import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.service.impl.AdServiceImpl;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,34 +32,42 @@ public class AdsController {
 
 
     @GetMapping
-    public ResponseEntity<List<AdDto>> getAllAds() {
+    public ResponseEntity<AdsDto> getAllAds() {
         //  логика
         if (!adService.getAllAds().isEmpty()) {
-            return new ResponseEntity<>(adService.getAllAds(), HttpStatus.OK);
+            log.info("all ads");
+            return new ResponseEntity<>(new AdsDto(adService.getAllAds().size(), adService.getAllAds()), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping()
-    public ResponseEntity<AdDto> addAd(@RequestParam("ad") CreateOrUpdateAdDto ad, @RequestPart("image") MultipartFile image) {
-        log.info("Adding ad with title: {}", ad.getTitle());
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<AdDto> addAd(@RequestPart("properties") CreateOrUpdateAdDto createAds,
+                                       @RequestPart("image") MultipartFile image,
+                                       HttpServletRequest request) {
+        String userNameEmail = request.getRemoteUser();
+        log.info("Adding ad with title: {}", createAds.getTitle());
         // логика
-        if (image != null && ad != null) { // условие проверки наличия авторизации
-            return new ResponseEntity<>(adService.createAd(ad), HttpStatus.CREATED);
+        // добавить обработку картинки
+        if (image != null && createAds != null) { // условие проверки наличия авторизации
+            AdDto adDto = adService.createAd(createAds, userNameEmail, image.getName());
+            return new ResponseEntity<>(adDto, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<ExtendedAdDto> getAdById(@PathVariable("id") Long id) {
-        ExtendedAdDto ad = null;// получения объявления по id
+        // получения объявления по id
         if (adService.findExtendedAd(id) != null) {
             return new ResponseEntity<>(adService.findExtendedAd(id), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ExtendedAdDto> removeAd(@PathVariable Long id) {
         adService.delete(id);
