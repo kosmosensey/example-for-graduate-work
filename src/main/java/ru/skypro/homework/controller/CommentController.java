@@ -35,7 +35,7 @@ public class CommentController {
 
     //Добавление комментария к объявлению
     @PostMapping ("/{id}/comments")
-    public ResponseEntity<CommentDto> addComment(@PathVariable("id") Long id,
+    public ResponseEntity<CommentDto> addComment(@PathVariable("id") Integer id,
                                                  @RequestBody CreateOrUpdateCommentDto comment) {
         if (adService.findExtendedAd(id) != null && comment != null) {
             return new ResponseEntity<>(commentService.createComment(comment), HttpStatus.CREATED);
@@ -46,7 +46,7 @@ public class CommentController {
 
     // удаление комментария
     @DeleteMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable("adId") Long adId,
+    public ResponseEntity<Void> deleteComment(@PathVariable("adId") Integer adId,
                                               @PathVariable("commentId") Long commentId) {
         if (adService.findExtendedAd(adId) != null && commentService.findComment(commentId) != null) {
             commentService.deleteComment(commentId);

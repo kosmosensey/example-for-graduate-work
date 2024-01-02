@@ -6,10 +6,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.RegisterDto;
-import ru.skypro.homework.dto.UpdateUserDto;
-import ru.skypro.homework.entities.Comment;
 import ru.skypro.homework.entities.User;
-import ru.skypro.homework.exception.UserNotFoundException;
+import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.impl.UserServiceImpl;
 
@@ -29,7 +27,7 @@ public class UserDetailsManagerImpl implements UserDetailsManager {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
                 .map(UserDetailsImpl::new)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(NotFoundException::new);
     }
 
     @Override

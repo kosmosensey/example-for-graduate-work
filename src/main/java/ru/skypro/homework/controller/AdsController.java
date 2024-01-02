@@ -6,8 +6,10 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDto;
 import ru.skypro.homework.dto.AdsDto;
@@ -59,7 +61,7 @@ public class AdsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAdDto> getAdById(@PathVariable("id") Long id) {
+    public ResponseEntity<ExtendedAdDto> getAdById(@PathVariable("id") Integer id) {
         // получения объявления по id
         if (adService.findExtendedAd(id) != null) {
             return new ResponseEntity<>(adService.findExtendedAd(id), HttpStatus.OK);
@@ -69,18 +71,20 @@ public class AdsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ExtendedAdDto> removeAd(@PathVariable Long id) {
-        adService.delete(id);
-        ExtendedAdDto ad = null;// получения объявления по id
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        //            реализовать
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public ResponseEntity<Void> removeAd(@PathVariable Integer id, Authentication authentication) {
+        try {
+            adService.delete(id, authentication);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (HttpClientErrorException.NotFound e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+//                    реализовать
 //            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 //            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ExtendedAdDto> updateAd(@PathVariable Long id, @RequestBody ExtendedAdDto extendedAd) {
+    public ResponseEntity<ExtendedAdDto> updateAd(@PathVariable Integer id, @RequestBody ExtendedAdDto extendedAd) {
         if (adService.findExtendedAd(id) != null) {
             return new ResponseEntity<>(adService.updateExtendedAd(extendedAd), HttpStatus.OK);
         } else {
@@ -104,7 +108,7 @@ public class AdsController {
     }
 
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<String>> updateImage(@PathVariable Long id, @RequestParam MultipartFile image) throws IOException {
+    public ResponseEntity<List<String>> updateImage(@PathVariable Integer id, @RequestParam MultipartFile image) throws IOException {
         ExtendedAdDto ad = null;
         if (ad == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

@@ -21,7 +21,9 @@ create table ads
     description TEXT,
     price Integer,
     image TEXT,
-    author Integer REFERENCES users(id)
+    author Integer REFERENCES users(id),
+    image_id Integer
+
 );
 
 create table comments
@@ -30,4 +32,11 @@ create table comments
     created_at Integer,
     text TEXT,
     author Integer REFERENCES users(id)
+);
+
+CREATE TABLE image (
+    id SERIAL PRIMARY KEY,
+    data oid,
+    file_size BIGINT,
+    media_type VARCHAR
 );
