@@ -13,8 +13,7 @@
 
   <groupId>ru.skypro</groupId>
   <artifactId>ads</artifactId>
-  <version>0.0.1-SNAPSHOT</version
-  >
+  <version>0.0.1-SNAPSHOT</version>
   <name>Ads application</name>
   <description>Application for managing ads</description>
 
@@ -48,6 +47,10 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <optional>true</optional>
@@ -62,6 +65,12 @@
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>org.jetbrains</groupId>
+          <artifactId>annotations</artifactId>
+          <version>24.0.1</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 
   <build>
@@ -78,6 +87,14 @@
           </excludes>
         </configuration>
       </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>16</source>
+                <target>16</target>
+            </configuration>
+        </plugin>
     </plugins>
   </build>
 
