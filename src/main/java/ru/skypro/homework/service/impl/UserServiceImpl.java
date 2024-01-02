@@ -7,7 +7,7 @@ import ru.skypro.homework.dto.*;
 import ru.skypro.homework.dto.mapper.UpdateUserMapper;
 import ru.skypro.homework.dto.mapper.UserDtoMapper;
 import ru.skypro.homework.entities.User;
-import ru.skypro.homework.exception.UserNotFoundException;
+import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public UserDto findByEmail(String email) {
-        User findedUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        User findedUser = userRepository.findByEmail(email).orElseThrow(NotFoundException::new);
         return userDtoMapper.mapToUserDto(findedUser);
     }
 }
