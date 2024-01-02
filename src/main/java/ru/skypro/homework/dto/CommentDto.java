@@ -8,7 +8,7 @@ public class CommentDto {
     private String authorImage;
     private String authorFirstName;
     private Integer createdAt;
-    private Integer pk;
+    private Integer id;
     private String text;
 
 }

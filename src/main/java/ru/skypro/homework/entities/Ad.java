@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 @Data
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor
 @Table(name = "ads")
@@ -34,4 +33,5 @@ public class Ad {
     @OneToOne
     @JoinColumn(name = "image_id")
     private Image image;
+
 }

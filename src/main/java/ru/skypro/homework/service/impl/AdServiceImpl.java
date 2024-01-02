@@ -40,6 +40,7 @@ public class AdServiceImpl {
     public AdDto createAd(AdDto adDto) {
         return adMapper.adToAdDto(adRepository.save(adMapper.adDtoToAd(adDto)));
     }
+
     public AdDto createAd(CreateOrUpdateAdDto adDto, String email, String imagePath) {
         // добавить обработку картинки
         User user = userDtoMapper.mapToUser(userService.findByEmail(email));
@@ -55,21 +56,22 @@ public class AdServiceImpl {
     public AdDto updateAd(AdDto adDto) {
         return adMapper.adToAdDto(adRepository.save(adMapper.adDtoToAd(adDto)));
     }
+
     public ExtendedAdDto updateExtendedAd(ExtendedAdDto adDto) {
         return extendedAdMapper.toDto(adRepository.save(extendedAdMapper.toEntity(adDto)));
     }
 
-
     public AdDto findAd(Integer id) {
         return adMapper.adToAdDto(adRepository.findById(id).get());
     }
+
     public ExtendedAdDto findExtendedAd(Integer id) {
         return extendedAdMapper.toDto(adRepository.findById(id).get());
     }
 
     public void delete(Integer id, Authentication authentication) {
         Ad adForDell = adRepository.findById(id).orElseThrow(NotFoundException::new);
-        Image deletedImage = imageService.findById(adForDell.getImage().getId); // Почему не могу взять айди от изображения....
+        Image deletedImage = imageService.findById(adForDell.getImage().getId());
         String deletedAdAuthorName = adForDell.getAuthor().getEmail();
         if (ValidationService.isAdmin(authentication) || ValidationService.isOwner(authentication, deletedAdAuthorName)) {
             adRepository.delete(adForDell);

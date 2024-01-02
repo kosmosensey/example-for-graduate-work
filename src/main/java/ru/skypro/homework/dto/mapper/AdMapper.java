@@ -8,19 +8,19 @@ import ru.skypro.homework.entities.Ad;
 public class AdMapper {
     public Ad adDtoToAd(AdDto adDto) {
         Ad ad = new Ad();
-        ad.setId(adDto.getPk());
+        ad.setId(adDto.getId());
         ad.setTitle(adDto.getTitle());
-        ad.setImage(adDto.getImage());
+        ad.setImageAddress(adDto.getImageAddress());
         ad.setPrice(adDto.getPrice());
         return ad;
     }
 
     public  AdDto adToAdDto(Ad ad) {
         AdDto adDto = new AdDto();
-        adDto.setPk(ad.getId());
+        adDto.setId(ad.getId());
         adDto.setAuthor(ad.getAuthor().getId());
         adDto.setTitle(ad.getTitle());
-        adDto.setImage(ad.getImage());
+        adDto.setImageAddress(ad.getImageAddress());
         adDto.setPrice(ad.getPrice());
         return adDto;
     }
