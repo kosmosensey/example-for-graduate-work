@@ -31,7 +31,8 @@ create table comments
     id serial not null primary key,
     created_at Integer,
     text TEXT,
-    author Integer REFERENCES users(id)
+    author Integer REFERENCES users(id),
+    ad_id Integer
 );
 
 CREATE TABLE image (
