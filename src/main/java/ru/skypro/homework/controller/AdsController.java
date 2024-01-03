@@ -73,7 +73,7 @@ public class AdsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeAd(@PathVariable Integer id, Authentication authentication) {
         try {
-            adService.delete(id, authentication);
+            adService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (HttpClientErrorException.NotFound e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

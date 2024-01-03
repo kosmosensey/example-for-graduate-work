@@ -2,14 +2,10 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.AdDto;
 import ru.skypro.homework.dto.CommentDto;
 import ru.skypro.homework.dto.CreateOrUpdateCommentDto;
-import ru.skypro.homework.dto.mapper.AdMapper;
 import ru.skypro.homework.dto.mapper.CommentMapper;
 import ru.skypro.homework.dto.mapper.CreateOrUpdateCommentMapper;
-import ru.skypro.homework.entities.Ad;
-import ru.skypro.homework.entities.Comment;
 import ru.skypro.homework.repository.CommentRepository;
 
 import java.util.List;

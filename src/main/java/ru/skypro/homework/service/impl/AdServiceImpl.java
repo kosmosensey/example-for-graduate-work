@@ -62,22 +62,14 @@ public class AdServiceImpl {
     }
 
     public AdDto findAd(Integer id) {
-        return adMapper.adToAdDto(adRepository.findById(id).get());
+        return adMapper.adToAdDto(adRepository.findById(id).orElseThrow(NotFoundException::new));
     }
 
     public ExtendedAdDto findExtendedAd(Integer id) {
-        return extendedAdMapper.toDto(adRepository.findById(id).get());
+        return extendedAdMapper.toDto(adRepository.findById(id).orElseThrow(NotFoundException::new));
     }
 
-    public void delete(Integer id, Authentication authentication) {
-        Ad adForDell = adRepository.findById(id).orElseThrow(NotFoundException::new);
-        Image deletedImage = imageService.findById(adForDell.getImage().getId());
-        String deletedAdAuthorName = adForDell.getAuthor().getEmail();
-        if (ValidationService.isAdmin(authentication) || ValidationService.isOwner(authentication, deletedAdAuthorName)) {
-            adRepository.delete(adForDell);
-            imageService.deleteImage(deletedImage);
-        } else {
-            throw new AccessDeniedException("Access is denied");
-        }
+    public void delete(Integer id) {
+        adRepository.deleteById(id);
     }
 }
