@@ -14,11 +14,16 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @ManyToOne
-    @JoinColumn(name = "author")
-    private User author;
     @Column(name = "created_at")
     private Integer createdAt;
     @Column(name = "text")
     private String text;
+
+    @ManyToOne
+    @JoinColumn(name = "author")
+    private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "ad_id")
+    private Ad ad;
 }
