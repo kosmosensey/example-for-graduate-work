@@ -39,17 +39,6 @@ public class UserDetailsManagerImpl implements UserDetailsManager {
         userRepository.save(user);
     }
 
-    public void createUser(RegisterDto registerDto) {
-        User user = new User();
-        user.setPassword(registerDto.getPassword());
-        user.setEmail(registerDto.getUsername());
-        user.setFirstName(registerDto.getFirstName());
-        user.setLastName(registerDto.getLastName());
-        user.setPhone(registerDto.getPhone());
-        user.setRole(registerDto.getRole());
-        userRepository.save(user);
-    }
-
     @Override
     public void changePassword(String username, String newPassword) {
         UserDetails userDetails = loadUserByUsername(username);
