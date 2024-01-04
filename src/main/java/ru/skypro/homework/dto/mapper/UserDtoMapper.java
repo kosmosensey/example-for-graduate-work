@@ -14,7 +14,7 @@ public class UserDtoMapper {
         dto.setLastName(entity.getLastName());
         dto.setPhone(entity.getPhone());
         dto.setRole(entity.getRole());
-        dto.setImage(entity.getImage());
+        dto.setImage(entity.getImageAddress());
         return dto;
     }
 
@@ -26,7 +26,7 @@ public class UserDtoMapper {
         entity.setLastName(dto.getLastName());
         entity.setPhone(dto.getPhone());
         entity.setRole(dto.getRole());
-        entity.setImage(dto.getImage());
+        entity.setImageAddress(dto.getImage());
         return entity;
     }
 }

@@ -2,7 +2,9 @@ package ru.skypro.homework.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.config.UserDetailsManagerImpl;
@@ -16,6 +18,7 @@ import ru.skypro.homework.service.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @RestController
 @CrossOrigin(value = "http://localhost:3000")
@@ -62,9 +65,11 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/me/image")
-    public ResponseEntity<Void> updateUserImage(@RequestParam("image") MultipartFile image) {
-        if (!image.isEmpty()) {
+    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateUserImage(@RequestParam("image") MultipartFile image,
+                                                Authentication authentication) throws IOException {
+        if (authentication.getName() != null) {
+            userService.updateUserAvatar(image,authentication);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
-import ru.skypro.homework.dto.RegisterDto;
 import ru.skypro.homework.entities.User;
 import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.repository.UserRepository;
@@ -33,7 +32,11 @@ public class UserDetailsManagerImpl implements UserDetailsManager {
     @Override
     public void createUser(UserDetails userDetails) {
         User user = new User();
-        user.setEmail(userDetails.getUsername());
+        String userEmail = userDetails.getUsername();
+        String usernameBeforeAtSymbol = userEmail.substring(0, userEmail.indexOf('@'));
+
+        user.setEmail(userEmail);
+        user.setUsername(usernameBeforeAtSymbol);
         user.setPassword(userDetails.getPassword());
         user.setRole(userDetails.getAuthorities().iterator().next().getAuthority().substring(5));
         userRepository.save(user);

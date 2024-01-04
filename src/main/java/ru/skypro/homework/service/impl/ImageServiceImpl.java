@@ -19,23 +19,13 @@ public class ImageServiceImpl implements ImageService {
     public Image getById(Integer id) {
         return imageRepository.findById(id).orElseThrow(NotFoundException::new);
     }
-
     @Override
-    public Image saveToDataBase(MultipartFile multipartFile) throws IOException {
+    public Image saveInDataBase(MultipartFile file) throws IOException {
         Image image = new Image();
-        image.setData(multipartFile.getBytes());
-        image.setFileSize(multipartFile.getSize());
-        image.setMediaType(multipartFile.getContentType());
-        return imageRepository.save(image);
-    }
-
-    @Override
-    public void deleteImage(Image image) {
-        imageRepository.delete(image);
-    }
-
-    @Override
-    public Image findById(Integer id) {
-        return imageRepository.findById(id).orElseThrow(NotFoundException::new);
+        image.setData(file.getBytes());
+        image.setFileSize(file.getSize());
+        image.setMediaType(file.getContentType());
+        imageRepository.save(image);
+        return image;
     }
 }

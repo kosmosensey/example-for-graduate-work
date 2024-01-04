@@ -2,19 +2,15 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.dto.mapper.AdMapper;
 import ru.skypro.homework.dto.mapper.ExtendedAdMapper;
 import ru.skypro.homework.dto.mapper.UserDtoMapper;
 import ru.skypro.homework.entities.Ad;
-import ru.skypro.homework.entities.Image;
 import ru.skypro.homework.entities.User;
 import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.repository.AdRepository;
-import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
 
@@ -28,7 +24,6 @@ public class AdServiceImpl {
     private final AdMapper adMapper;
     private final ExtendedAdMapper extendedAdMapper;
     private final UserDtoMapper userDtoMapper;
-    private final ImageService imageService;
     private final UserService userService;
 
     public List<AdDto> getAllAds() {

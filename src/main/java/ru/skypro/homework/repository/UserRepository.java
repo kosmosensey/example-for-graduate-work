@@ -15,8 +15,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "update users set first_name  = ? , last_name = ? , phone = ? where id = ?", nativeQuery = true)
     int updateSomeFields(String firstName, String lastName, String phone, Integer id);
 
-
     Optional<User> findByEmail(String email);
 
     boolean existsByEmail(String email);
+
+    User findByUsername(String userName);
+
 }
