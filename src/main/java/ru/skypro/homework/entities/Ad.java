@@ -30,8 +30,4 @@ public class Ad {
     @JoinColumn(name = "author")
     private User author;
 
-    @OneToOne
-    @JoinColumn(name = "image_id")
-    private Image image;
-
 }

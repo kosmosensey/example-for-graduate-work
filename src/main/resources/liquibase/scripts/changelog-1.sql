@@ -11,7 +11,8 @@ create table users
     role TEXT,
     image TEXT,
     user_name TEXT,
-    password TEXT
+    password TEXT,
+    image_id Integer
 );
 
 create table ads
@@ -31,12 +32,14 @@ create table comments
     id serial not null primary key,
     created_at Integer,
     text TEXT,
-    author Integer REFERENCES users(id)
+    author Integer REFERENCES users(id),
+    ad_id Integer
 );
 
-CREATE TABLE image (
+CREATE TABLE images (
     id SERIAL PRIMARY KEY,
-    data oid,
+    data OID,
+    file_path TEXT,
     file_size BIGINT,
     media_type VARCHAR
 );

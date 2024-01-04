@@ -24,11 +24,15 @@ public class User {
     @Column(name = "role")
     private String role;
     @Column(name = "image")
-    private String image;
+    private String imageAddress;
     @Column(name = "user_name")
     private String username;
     @Column(name = "password")
     private String password;
+
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 }
 
 
