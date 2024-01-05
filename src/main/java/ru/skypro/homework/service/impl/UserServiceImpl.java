@@ -82,8 +82,12 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(NotFoundException::new);
         Image newAvatar = imageService.saveInDataBase(image);
 
-        user.setImageAddress(String.valueOf(newAvatar));
+        user.setImage(newAvatar);
         user.setImageAddress("/images/" + newAvatar.getId());
         userRepository.save(user);
+    }
+    @Override
+    public byte[] getImage(Integer id) throws IOException {
+        return userRepository.findById(id).get().getImage().getData();
     }
 }

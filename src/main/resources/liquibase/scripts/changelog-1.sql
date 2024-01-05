@@ -38,7 +38,7 @@ create table comments
 
 CREATE TABLE images (
     id SERIAL PRIMARY KEY,
-    data OID,
+    data bytea,
     file_path TEXT,
     file_size BIGINT,
     media_type VARCHAR
