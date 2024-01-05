@@ -42,7 +42,7 @@ public class UserController {
         String userNameEmail = request.getRemoteUser();
         log.info("Changing password for user: {}", userNameEmail);
         userDetailsManager.changePassword(userNameEmail, newPassword.getNewPassword());
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/me")
@@ -68,19 +68,11 @@ public class UserController {
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateUserImage(@RequestParam MultipartFile image,
                                                 Authentication authentication) throws IOException {
-//        if (!(Objects.requireNonNull(image.getContentType()).startsWith("image/"))) {
-//            throw new InvalidMediaTypeException();
-//        }
         try {
             userService.updateUserAvatar(image, authentication);
             return ResponseEntity.ok().build();
         } catch (HttpClientErrorException.Unauthorized e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-    }
-    private boolean isValidPassword(NewPasswordDto newPassword) {
-
-        return newPassword.getCurrentPassword().length() >= 8
-               && newPassword.getNewPassword().length() >= 8; // Проверка длины
     }
 }

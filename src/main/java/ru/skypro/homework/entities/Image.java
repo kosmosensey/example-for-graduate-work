@@ -1,5 +1,6 @@
 package ru.skypro.homework.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "image")
 public class Image {

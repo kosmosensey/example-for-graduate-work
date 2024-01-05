@@ -21,4 +21,6 @@ public interface UserService {
     void updateUserAvatar(MultipartFile image, Authentication authentication) throws IOException;
 
     byte[] getImage(Integer id) throws IOException;
+
+//    byte[] getImage(Integer id) throws IOException;
 }

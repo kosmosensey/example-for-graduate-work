@@ -1,6 +1,13 @@
 --liquibase formatted sql
 
 --changeset mavile:1
+CREATE TABLE image (
+    id SERIAL PRIMARY KEY,
+    data bytea,
+    file_size BIGINT,
+    media_type VARCHAR
+);
+
 create table users
 (
     id serial not null primary key,
@@ -12,7 +19,7 @@ create table users
     image TEXT,
     user_name TEXT,
     password TEXT,
-    image_id Integer
+    image_id Integer REFERENCES image(id)
 );
 
 create table ads
@@ -24,7 +31,6 @@ create table ads
     image TEXT,
     author Integer REFERENCES users(id),
     image_id Integer
-
 );
 
 create table comments
@@ -33,12 +39,5 @@ create table comments
     created_at Integer,
     text TEXT,
     author Integer REFERENCES users(id),
-    ad_id Integer
-);
-
-CREATE TABLE image (
-    id SERIAL PRIMARY KEY,
-    data bytea,
-    file_size BIGINT,
-    media_type VARCHAR
+    ad_id Integer REFERENCES ads(id)
 );
