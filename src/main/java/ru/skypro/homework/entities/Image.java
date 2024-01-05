@@ -2,6 +2,7 @@ package ru.skypro.homework.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -17,5 +18,6 @@ public class Image {
     private long fileSize;
     private String mediaType;
     @Lob
+    @Type(type="org.hibernate.type.BinaryType")
     private byte[] data;
 }

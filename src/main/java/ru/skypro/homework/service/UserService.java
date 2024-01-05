@@ -22,4 +22,6 @@ public interface UserService {
     UserDto findByEmail(String email);
 
     void updateUserAvatar(MultipartFile image, Authentication authentication) throws IOException;
+
+    byte[] getImage(Integer id) throws IOException;
 }
