@@ -55,20 +55,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public UserDto updateUser(Integer id, UpdateUserDto updateUser) {
-
-        User user = userRepository.findById(id).get();
-        if (userRepository.updateSomeFields(updateUser.getFirstName(), updateUser.getLastName(), updateUser.getPhone(), user.getId()) > 0) {
-            return userDtoMapper.mapToUserDto(userRepository.findById(id).get());
-        } else {
-            throw new RuntimeException("Данные не изменились");
-        }
-    }
-
-    @Override
-    public void updateUser(User user) {
-        userDtoMapper.mapToUserDto(userRepository.save(user));
+    public UpdateUserDto updateUser(UpdateUserDto updateUserDto, Authentication authentication) {
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(NotFoundException::new);
+        user.setFirstName(updateUserDto.getFirstName());
+        user.setLastName(updateUserDto.getLastName());
+        user.setPhone(updateUserDto.getPhone());
+        userRepository.save(user);
+        return updateUserMapper.mapToUpdateUserDto(user);
     }
 
     @Override
@@ -83,7 +76,7 @@ public class UserServiceImpl implements UserService {
         Image newAvatar = imageService.saveInDataBase(image);
 
         user.setImage(newAvatar);
-        user.setImageAddress("/images/" + newAvatar.getId());
+        user.setImageAddress("/image/" + newAvatar.getId());
         userRepository.save(user);
     }
     @Override

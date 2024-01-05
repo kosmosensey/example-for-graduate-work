@@ -14,10 +14,7 @@ public interface UserService {
 
     UserDto updateUserDetails(UpdateUserDto updateUser);
 
-    @Transactional
-    UserDto updateUser(Integer id, UpdateUserDto updateUser);
-
-    void updateUser(User user);
+    UpdateUserDto updateUser(UpdateUserDto user,Authentication authentication);
 
     UserDto findByEmail(String email);
 

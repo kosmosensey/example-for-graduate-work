@@ -44,14 +44,7 @@ public class UserDetailsManagerImpl implements UserDetailsManager {
 
     @Override
     public void changePassword(String username, String newPassword) {
-        UserDetails userDetails = loadUserByUsername(username);
-
-        UserDetails updatedUser = org.springframework.security.core.userdetails.User.withUserDetails(userDetails)
-                .password(passwordEncoder.encode(newPassword))
-                .build();
-        User user = userRepository.findByEmail(username).get();
-        user.setPassword(updatedUser.getPassword());
-        userService.updateUser(user);
+        throw new UnsupportedOperationException();
     }
 
     @Override

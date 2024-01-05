@@ -36,10 +36,9 @@ create table comments
     ad_id Integer
 );
 
-CREATE TABLE images (
+CREATE TABLE image (
     id SERIAL PRIMARY KEY,
     data bytea,
-    file_path TEXT,
     file_size BIGINT,
     media_type VARCHAR
 );

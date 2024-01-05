@@ -16,7 +16,7 @@ import java.io.IOException;
 public class ImageController {
     private final UserService userService;
 
-    @GetMapping(value = "/images/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getAvatar(@PathVariable Integer id) throws IOException {
         return ResponseEntity.ok(userService.getImage(id));
     }
