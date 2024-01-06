@@ -1,44 +1,44 @@
 package ru.skypro.homework.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
+import ru.skypro.homework.dto.RegisterDto;
 import ru.skypro.homework.entities.User;
-import ru.skypro.homework.exception.NotFoundException;
+import ru.skypro.homework.enums.Role;
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.impl.UserServiceImpl;
 
 @Component
+@RequiredArgsConstructor
 public class UserDetailsManagerImpl implements UserDetailsManager {
     private final UserRepository userRepository;
-    private final UserServiceImpl userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public UserDetailsManagerImpl(UserRepository userRepository, UserServiceImpl userService) {
-        this.userRepository = userRepository;
-        this.userService = userService;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
                 .map(UserDetailsImpl::new)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow();
     }
 
     @Override
     public void createUser(UserDetails userDetails) {
         User user = new User();
-        String userEmail = userDetails.getUsername();
-        String usernameBeforeAtSymbol = userEmail.substring(0, userEmail.indexOf('@'));
-
-        user.setEmail(userEmail);
-        user.setUsername(usernameBeforeAtSymbol);
+        user.setEmail(userDetails.getUsername());
         user.setPassword(userDetails.getPassword());
-        user.setRole(userDetails.getAuthorities().iterator().next().getAuthority().substring(5));
+        user.setRole(Role.valueOf(userDetails.getAuthorities().iterator().next().getAuthority().substring(5)));
+        userRepository.save(user);
+    }
+
+    public void createUser(RegisterDto registerDto, String pass) {
+        User user = new User();
+        user.setPassword(pass);
+        user.setEmail(registerDto.getUsername());
+        user.setFirstName(registerDto.getFirstName());
+        user.setLastName(registerDto.getLastName());
+        user.setPhone(registerDto.getPhone());
+        user.setRole(registerDto.getRole());
         userRepository.save(user);
     }
 

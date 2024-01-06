@@ -31,10 +31,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody RegisterDto register) {
-        log.info("Registered user with email: {}", register.getUsername());
-        log.info("First Name: {}", register.getFirstName());
-        log.info("Last Name: {}", register.getLastName());
-        log.info("Phone: {}", register.getPhone());
         if (authService.register(register)) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {

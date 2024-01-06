@@ -6,29 +6,18 @@ import ru.skypro.homework.entities.Ad;
 
 @Component
 public class ExtendedAdMapper {
-    public Ad toEntity(ExtendedAdDto dto) {
-        Ad entity = new Ad();
-        entity.setId(dto.getId());
-        entity.setDescription(dto.getDescription());
-        entity.setImageAddress(dto.getImageAddress());
-        entity.setPrice(dto.getPrice());
-        entity.setTitle(dto.getTitle());
 
-        return entity;
-    }
-
-    public ExtendedAdDto toDto(Ad entity) {
+    public static ExtendedAdDto toDto(Ad entity) {
         ExtendedAdDto dto = new ExtendedAdDto();
         dto.setId(entity.getId());
-        dto.setAuthorFirstName(entity.getAuthor().getFirstName());
-        dto.setAuthorLastName(entity.getAuthor().getLastName());
+        dto.setAuthorFirstName(entity.getUser().getFirstName());
+        dto.setAuthorLastName(entity.getUser().getLastName());
         dto.setDescription(entity.getDescription());
-        dto.setEmail(entity.getAuthor().getEmail());
-        dto.setImageAddress(entity.getImageAddress());
-        dto.setPhone(entity.getAuthor().getPhone());
+        dto.setEmail(entity.getUser().getEmail());
+        dto.setPhone(entity.getUser().getPhone());
         dto.setPrice(entity.getPrice());
         dto.setTitle(entity.getTitle());
-
+        dto.setImage("/images/" + entity.getImageUrl());
         return dto;
     }
 }

@@ -2,61 +2,51 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
+import ru.skypro.homework.dto.mapper.NewPasswordMapper;
 import ru.skypro.homework.dto.mapper.UpdateUserMapper;
 import ru.skypro.homework.dto.mapper.UserDtoMapper;
-import ru.skypro.homework.entities.Image;
 import ru.skypro.homework.entities.User;
-import ru.skypro.homework.exception.NotFoundException;
+
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
+    private final PasswordEncoder encoder;
     private final UpdateUserMapper updateUserMapper;
-    private final ImageService imageService;
+    private final NewPasswordMapper newPasswordMapper;
 
-    public List<UserDto> getAllUsers() {
-        return userRepository.findAll().stream()
-                .map(userDtoMapper::mapToUserDto)
-                .toList();
-    }
 
-    public UserDto createUser(UserDto userDto) {
-        return userDtoMapper.mapToUserDto(userRepository.save(userDtoMapper.mapToUser(userDto)));
-    }
-
-    public UserDto findUser(Integer id) {
-        return userDtoMapper.mapToUserDto(userRepository.findById(id).get());
-    }
-
-    public void deleteUser(Integer id) {
-        userRepository.deleteById(id);
+    @Override
+    public void setPassword(String currentPassword, String newPassword, Authentication authentication) {
+        if (authentication.getName() != null) {
+            User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+            NewPasswordDto newPasswordDto = newPasswordMapper.mapToNewPasswordDto(user);
+            if (encoder.matches(currentPassword, newPasswordDto.getCurrentPassword())) {
+                user.setPassword(encoder.encode(newPassword));
+                userRepository.save(user);
+            }
+        }
     }
 
     @Override
-    public UserDto getLoggedInUser() {
-        return null;
-    }
-
-    @Override
-    public UserDto updateUserDetails(UpdateUserDto updateUser) {
-        return userDtoMapper.mapToUserDto(userRepository.save(updateUserMapper.mapToUser(updateUser)));
+    public UserDto getLoggedInUser(Authentication authentication) {
+        return userDtoMapper.mapToUserDto(userRepository.findByEmail(authentication.getName()).orElseThrow());
     }
 
     @Override
     public UpdateUserDto updateUser(UpdateUserDto updateUserDto, Authentication authentication) {
-        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(NotFoundException::new);
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         user.setFirstName(updateUserDto.getFirstName());
         user.setLastName(updateUserDto.getLastName());
         user.setPhone(updateUserDto.getPhone());
@@ -65,22 +55,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateUserAvatar(MultipartFile image, Authentication authentication) throws IOException {
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+        user.setData(image.getBytes());
+        user.setImageUrl("/avatars/" + user.getId());
+        userRepository.save(user);
+    }
+
+    @Override
+    public byte[] getImage(Integer id) throws IOException {
+        return userRepository.findById(id).get().getData();
+    }
+
+    @Override
     public UserDto findByEmail(String email) {
-        User findedUser = userRepository.findByEmail(email).orElseThrow(NotFoundException::new);
+        User findedUser = userRepository.findByEmail(email).orElseThrow();
         return userDtoMapper.mapToUserDto(findedUser);
     }
 
     @Override
-    public void updateUserAvatar(MultipartFile image, Authentication authentication) throws IOException {
-        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(NotFoundException::new);
-        Image newAvatar = imageService.saveInDataBase(image);
-
-        user.setImage(newAvatar);
-        user.setImageAddress("/image/" + newAvatar.getId());
-        userRepository.save(user);
-    }
-    @Override
-    public byte[] getImage(Integer id) throws IOException {
-        return userRepository.findById(id).get().getImage().getData();
+    public User getUser(String userName) {
+        return userRepository.findByEmail(userName).orElseThrow();
     }
 }
