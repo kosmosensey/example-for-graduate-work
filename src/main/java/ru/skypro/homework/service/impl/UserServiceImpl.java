@@ -2,12 +2,15 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
+import ru.skypro.homework.dto.mapper.NewPasswordMapper;
 import ru.skypro.homework.dto.mapper.UpdateUserMapper;
 import ru.skypro.homework.dto.mapper.UserDtoMapper;
 import ru.skypro.homework.entities.User;
+
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
@@ -19,17 +22,26 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserDtoMapper userDtoMapper;
+    private final PasswordEncoder encoder;
     private final UpdateUserMapper updateUserMapper;
+    private final NewPasswordMapper newPasswordMapper;
 
+
+    @Override
+    public void setPassword(String currentPassword, String newPassword, Authentication authentication) {
+        if (authentication.getName() != null) {
+            User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+            NewPasswordDto newPasswordDto = newPasswordMapper.mapToNewPasswordDto(user);
+            if (encoder.matches(currentPassword, newPasswordDto.getCurrentPassword())) {
+                user.setPassword(encoder.encode(newPassword));
+                userRepository.save(user);
+            }
+        }
+    }
 
     @Override
     public UserDto getLoggedInUser(Authentication authentication) {
         return userDtoMapper.mapToUserDto(userRepository.findByEmail(authentication.getName()).orElseThrow());
-    }
-
-    @Override
-    public UserDto updateUserDetails(UpdateUserDto updateUser) {
-        return userDtoMapper.mapToUserDto(userRepository.save(updateUserMapper.mapToUser(updateUser)));
     }
 
     @Override
@@ -43,22 +55,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto findByEmail(String email) {
-        User findedUser = userRepository.findByEmail(email).orElseThrow();
-        return userDtoMapper.mapToUserDto(findedUser);
-    }
-
-    @Override
     public void updateUserAvatar(MultipartFile image, Authentication authentication) throws IOException {
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
         user.setData(image.getBytes());
-        user.setImageUrl("/avatar/" + user.getId());
+        user.setImageUrl("/avatars/" + user.getId());
         userRepository.save(user);
     }
 
     @Override
     public byte[] getImage(Integer id) throws IOException {
         return userRepository.findById(id).get().getData();
+    }
+
+    @Override
+    public UserDto findByEmail(String email) {
+        User findedUser = userRepository.findByEmail(email).orElseThrow();
+        return userDtoMapper.mapToUserDto(findedUser);
     }
 
     @Override

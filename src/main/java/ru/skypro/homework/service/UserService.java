@@ -10,9 +10,9 @@ import ru.skypro.homework.entities.User;
 import java.io.IOException;
 
 public interface UserService {
-    UserDto getLoggedInUser(Authentication authentication);
+    void setPassword(String currentPassword, String newPassword, Authentication authentication);
 
-    UserDto updateUserDetails(UpdateUserDto updateUser);
+    UserDto getLoggedInUser(Authentication authentication);
 
     UpdateUserDto updateUser(UpdateUserDto user,Authentication authentication);
 
