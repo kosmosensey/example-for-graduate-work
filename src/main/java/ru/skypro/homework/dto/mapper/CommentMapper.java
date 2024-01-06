@@ -10,7 +10,7 @@ import ru.skypro.homework.entities.Comment;
 public class CommentMapper {
     public static Comment commentDtoToComment(CommentDto commentDto) {
         Comment comment = new Comment();
-        comment.setId(commentDto.getId());
+        comment.setId(commentDto.getPk());
         comment.setCreatedAt(commentDto.getCreatedAt());
         comment.setText(commentDto.getText());
         return comment;
@@ -18,7 +18,7 @@ public class CommentMapper {
 
     public static CommentDto commentToCommentDto(Comment comment) {
         CommentDto commentDto = new CommentDto();
-        commentDto.setId(comment.getId());
+        commentDto.setPk(comment.getId());
         commentDto.setAuthor(comment.getUser().getId());
         commentDto.setAuthorImage("/avatars/" + comment.getUser().getId());
         commentDto.setAuthorFirstName(comment.getUser().getFirstName());

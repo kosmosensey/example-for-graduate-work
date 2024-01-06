@@ -11,5 +11,5 @@ public class UserDto {
     private String lastName;
     private String phone;
     private Role role;
-    private String imageUrl;
+    private String image;
 }
