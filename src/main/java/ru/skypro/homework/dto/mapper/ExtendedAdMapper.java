@@ -9,7 +9,7 @@ public class ExtendedAdMapper {
 
     public static ExtendedAdDto toDto(Ad entity) {
         ExtendedAdDto dto = new ExtendedAdDto();
-        dto.setId(entity.getId());
+        dto.setPk(entity.getId());
         dto.setAuthorFirstName(entity.getUser().getFirstName());
         dto.setAuthorLastName(entity.getUser().getLastName());
         dto.setDescription(entity.getDescription());

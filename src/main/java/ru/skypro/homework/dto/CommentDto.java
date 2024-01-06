@@ -2,15 +2,15 @@ package ru.skypro.homework.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 public class CommentDto {
-    private Integer id;
+    private Integer pk;
     private Integer author;
     private String authorImage;
     private String authorFirstName;
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
     private String text;
 
 }
