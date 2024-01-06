@@ -46,12 +46,12 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserDto> getUser() {
-        UserDto userDto = userService.getLoggedInUser();
-        if (userDto != null) {
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
+    public ResponseEntity<UserDto> getUser(Authentication authentication) {
+        UserDto userDto = userService.getLoggedInUser(authentication);
+        if (authentication.getName() != null) {
+           return ResponseEntity.ok(userService.getLoggedInUser(authentication));
         } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+           return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 

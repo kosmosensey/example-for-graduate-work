@@ -9,7 +9,7 @@ public class ExtendedAdDto {
     private String authorLastName;
     private String description;
     private String email;
-    private String imageAddress;
+    private String image;
     private String phone;
     private Integer price;
     private String title;

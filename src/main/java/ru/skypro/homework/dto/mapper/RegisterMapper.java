@@ -10,7 +10,7 @@ import ru.skypro.homework.entities.User;
 public class RegisterMapper {
     public RegisterDto mapToRegisterDto(User entity){
         RegisterDto dto = new RegisterDto();
-        dto.setUsername(entity.getUsername());
+        dto.setUsername(entity.getEmail());
         dto.setPassword(entity.getPassword());
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
@@ -21,7 +21,7 @@ public class RegisterMapper {
 
     public User mapToUser(RegisterDto dto){
         User entity = new User();
-        entity.setUsername(dto.getUsername());
+        entity.setEmail(dto.getUsername());
         entity.setPassword(dto.getPassword());
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());

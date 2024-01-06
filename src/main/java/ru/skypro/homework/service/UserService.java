@@ -10,7 +10,7 @@ import ru.skypro.homework.entities.User;
 import java.io.IOException;
 
 public interface UserService {
-    UserDto getLoggedInUser();
+    UserDto getLoggedInUser(Authentication authentication);
 
     UserDto updateUserDetails(UpdateUserDto updateUser);
 
@@ -22,5 +22,5 @@ public interface UserService {
 
     byte[] getImage(Integer id) throws IOException;
 
-//    byte[] getImage(Integer id) throws IOException;
+    User getUser(String userName);
 }
