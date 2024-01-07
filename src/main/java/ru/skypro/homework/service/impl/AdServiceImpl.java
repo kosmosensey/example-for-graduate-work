@@ -44,11 +44,8 @@ public class AdServiceImpl implements AdService {
         User user = userService.getUser(authentication.getName());
         Ad ad = createOrUpdateAdMapper.mapToAd(adDto);
         ad.setUser(user);
-        ad.setTitle(adDto.getTitle());
-        ad.setPrice(adDto.getPrice());
-        ad.setDescription(adDto.getDescription());
         ad.setData(image.getBytes());
-        ad.setImageUrl("/image/" + image.getOriginalFilename());
+        ad.setImageUrl(image.getOriginalFilename());
         return AdMapper.adToAdDto(adRepository.save(ad));
     }
 
@@ -65,7 +62,7 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public AdDto updateAds(Integer id, CreateOrUpdateAdDto createOrUpdateAdDto) {
-        Ad ad = adRepository.findAdById(id);
+        Ad ad = adRepository.findAdByPk(id);
         if (ad == null) {
             return null;
         }
@@ -78,7 +75,7 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public void deleteAd(Integer id, Authentication authentication) {
-        Ad deletedAd = adRepository.findAdById(id);
+        Ad deletedAd = adRepository.findAdByPk(id);
         if (CheckRoleService.isAdminOrOwnerAd(authentication, deletedAd.getUser().getEmail())) {
             adRepository.deleteById(id);
         } else {
@@ -88,7 +85,7 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public ExtendedAdDto findExtendedAd(Integer id) {
-        Ad ad = adRepository.findAdById(id);
+        Ad ad = adRepository.findAdByPk(id);
         if (ad != null) {
             return ExtendedAdMapper.toDto(ad);
         }
@@ -99,13 +96,13 @@ public class AdServiceImpl implements AdService {
     public byte[] updateImageAd(Integer id, MultipartFile image) throws IOException {
         Ad ad = adRepository.findById(id).orElseThrow(AdNotFoundException::new);
         ad.setData(ad.getData());
-        ad.setImageUrl("/images/" + ad.getId());
+        ad.setImageUrl("/images/" + ad.getPk());
         adRepository.save(ad);
         return ad.getData();
     }
 
     @Override
     public byte[] getImage(Integer imageId) throws IOException {
-        return adRepository.findById(imageId).get().getData();
+        return adRepository.findAdByPk(imageId).getData();
     }
 }

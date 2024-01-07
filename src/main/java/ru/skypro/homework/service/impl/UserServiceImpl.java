@@ -11,6 +11,7 @@ import ru.skypro.homework.dto.mapper.UpdateUserMapper;
 import ru.skypro.homework.dto.mapper.UserDtoMapper;
 import ru.skypro.homework.entities.User;
 
+import ru.skypro.homework.exception.UserNotFoundException;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setPassword(String currentPassword, String newPassword, Authentication authentication) {
         if (authentication.getName() != null) {
-            User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+            User user = userRepository.findByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);
             NewPasswordDto newPasswordDto = newPasswordMapper.mapToNewPasswordDto(user);
             if (encoder.matches(currentPassword, newPasswordDto.getCurrentPassword())) {
                 user.setPassword(encoder.encode(newPassword));
@@ -41,12 +42,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getLoggedInUser(Authentication authentication) {
-        return userDtoMapper.mapToUserDto(userRepository.findByEmail(authentication.getName()).orElseThrow());
+        return userDtoMapper.mapToUserDto(userRepository.findByEmail(authentication.getName())
+                .orElseThrow(UserNotFoundException::new));
     }
 
     @Override
     public UpdateUserDto updateUser(UpdateUserDto updateUserDto, Authentication authentication) {
-        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);
         user.setFirstName(updateUserDto.getFirstName());
         user.setLastName(updateUserDto.getLastName());
         user.setPhone(updateUserDto.getPhone());
@@ -56,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUserAvatar(MultipartFile image, Authentication authentication) throws IOException {
-        User user = userRepository.findByEmail(authentication.getName()).orElseThrow();
+        User user = userRepository.findByEmail(authentication.getName()).orElseThrow(UserNotFoundException::new);
         user.setData(image.getBytes());
         user.setImageUrl("/avatars/" + user.getId());
         userRepository.save(user);
@@ -69,12 +71,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findByEmail(String email) {
-        User findedUser = userRepository.findByEmail(email).orElseThrow();
+        User findedUser = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         return userDtoMapper.mapToUserDto(findedUser);
     }
 
     @Override
     public User getUser(String userName) {
-        return userRepository.findByEmail(userName).orElseThrow();
+        return userRepository.findByEmail(userName).orElseThrow(UserNotFoundException::new);
     }
 }
