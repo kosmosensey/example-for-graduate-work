@@ -44,11 +44,8 @@ public class AdServiceImpl implements AdService {
         User user = userService.getUser(authentication.getName());
         Ad ad = createOrUpdateAdMapper.mapToAd(adDto);
         ad.setUser(user);
-        ad.setTitle(adDto.getTitle());
-        ad.setPrice(adDto.getPrice());
-        ad.setDescription(adDto.getDescription());
         ad.setData(image.getBytes());
-        ad.setImageUrl(String.valueOf(ad.getPk()));
+        ad.setImageUrl(image.getOriginalFilename());
         return AdMapper.adToAdDto(adRepository.save(ad));
     }
 
@@ -106,6 +103,6 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public byte[] getImage(Integer imageId) throws IOException {
-        return adRepository.findById(imageId).get().getData();
+        return adRepository.findAdByPk(imageId).getData();
     }
 }
