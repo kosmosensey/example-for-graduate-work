@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class AdDto {
-    private Integer author;
-    private String imageAddress;
-    private Integer id;
-    private Integer price;
+    private Integer pk;
     private String title;
+    private Integer author;
+    private Integer price;
+    private String image;
 
 }
 

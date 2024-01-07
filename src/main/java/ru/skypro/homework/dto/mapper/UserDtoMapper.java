@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entities.User;
 
+
 @Component
 public class UserDtoMapper {
     public UserDto mapToUserDto(User entity) {
@@ -14,7 +15,7 @@ public class UserDtoMapper {
         dto.setLastName(entity.getLastName());
         dto.setPhone(entity.getPhone());
         dto.setRole(entity.getRole());
-        dto.setImage(entity.getImage());
+        dto.setImage(entity.getImageUrl());
         return dto;
     }
 
@@ -26,7 +27,6 @@ public class UserDtoMapper {
         entity.setLastName(dto.getLastName());
         entity.setPhone(dto.getPhone());
         entity.setRole(dto.getRole());
-        entity.setImage(dto.getImage());
         return entity;
     }
 }

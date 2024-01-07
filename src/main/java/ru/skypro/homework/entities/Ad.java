@@ -1,37 +1,40 @@
 package ru.skypro.homework.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
 @Data
-@Getter
+
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "ads")
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    private Integer pk;
+    @Column(name = "title", nullable = false)
+    private String title;
     @Column(name = "description")
     private String description;
-    @Column(name = "image")
-    private String imageAddress;
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Integer price;
-    @Column(name = "title")
-    private String title;
+    @Column(name = "image")
+    private String imageUrl;
+    @Column(name = "data")
+    @Lob
+    @Type(type = "org.hibernate.type.BinaryType")
+    private byte[] data;
 
-    @ManyToOne
-    @JoinColumn(name = "author")
-    private User author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToOne
-    @JoinColumn(name = "image_id")
-    private Image image;
+//    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+//    private List<Comment> comments;
 
 }

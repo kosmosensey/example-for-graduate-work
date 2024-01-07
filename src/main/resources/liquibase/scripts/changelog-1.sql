@@ -4,39 +4,32 @@
 create table users
 (
     id serial not null primary key,
-    email TEXT,
-    first_name  TEXT,
-    last_name   TEXT,
-    phone TEXT,
-    role TEXT,
-    image TEXT,
-    user_name TEXT,
-    password TEXT
+    email VARCHAR,
+    password VARCHAR,
+    first_name  VARCHAR,
+    last_name   VARCHAR,
+    phone VARCHAR,
+    role VARCHAR,
+    avatar VARCHAR,
+    data bytea
 );
 
 create table ads
 (
-    id serial not null primary key,
-    title   TEXT,
-    description TEXT,
+    pk serial not null primary key,
+    title   VARCHAR,
+    description VARCHAR,
     price Integer,
-    image TEXT,
-    author Integer REFERENCES users(id),
-    image_id Integer
-
+    image VARCHAR,
+    data bytea,
+    user_id Integer
 );
 
 create table comments
 (
     id serial not null primary key,
-    created_at Integer,
-    text TEXT,
-    author Integer REFERENCES users(id)
-);
-
-CREATE TABLE image (
-    id SERIAL PRIMARY KEY,
-    data oid,
-    file_size BIGINT,
-    media_type VARCHAR
+    created_at TIMESTAMP,
+    text VARCHAR,
+    author_id Integer,
+    ad_id Integer
 );
