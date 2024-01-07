@@ -95,7 +95,7 @@ public class AdServiceImpl implements AdService {
     @Override
     public byte[] updateImageAd(Integer id, MultipartFile image) throws IOException {
         Ad ad = adRepository.findById(id).orElseThrow(AdNotFoundException::new);
-        ad.setData(ad.getData());
+        ad.setData(image.getBytes());
         ad.setImageUrl("/images/" + ad.getPk());
         adRepository.save(ad);
         return ad.getData();
