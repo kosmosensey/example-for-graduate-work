@@ -3,29 +3,22 @@ package ru.skypro.homework.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.AdDto;
 import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.CreateOrUpdateAdDto;
 import ru.skypro.homework.dto.ExtendedAdDto;
-import ru.skypro.homework.entities.Ad;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.service.impl.AdServiceImpl;
 import ru.skypro.homework.service.impl.CheckRoleService;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @RestController
@@ -78,7 +71,7 @@ public class AdsController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        String userEmail = adRepository.findAdById(id).getUser().getEmail();
+        String userEmail = adRepository.findAdByPk(id).getUser().getEmail();
         boolean isAdminOrOwner = CheckRoleService.isAdminOrOwnerAd(authentication, userEmail);
         ExtendedAdDto foundAd = adService.findExtendedAd(id);
 
@@ -101,7 +94,7 @@ public class AdsController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        String userEmail = adRepository.findAdById(id).getUser().getEmail();
+        String userEmail = adRepository.findAdByPk(id).getUser().getEmail();
         boolean isAdminOrOwner = CheckRoleService.isAdminOrOwnerAd(authentication, userEmail);
         ExtendedAdDto foundAd = adService.findExtendedAd(id);
 
@@ -130,7 +123,7 @@ public class AdsController {
     public ResponseEntity<byte[]> updateImage(@PathVariable Integer id,
                                               @RequestParam MultipartFile image,
                                               Authentication authentication) throws IOException {
-        String userEmail = adRepository.findAdById(id).getUser().getEmail();
+        String userEmail = adRepository.findAdByPk(id).getUser().getEmail();
         boolean isAdminOrOwner = CheckRoleService.isAdminOrOwnerAd(authentication, userEmail);
         if (authentication.getName() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

@@ -11,6 +11,6 @@ import java.util.List;
 public interface AdRepository extends JpaRepository<Ad, Integer> {
     List<AdDto> findByUserId(Integer id);
 
-    Ad findAdById(int id);
+    Ad findAdByPk(int id);
 
 }

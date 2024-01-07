@@ -24,7 +24,6 @@ public class CommentController {
 
     //Получение комментариев объявления
     @GetMapping("/{id}/comments")
-
     public ResponseEntity<List<CommentDto>> getComments(@PathVariable("id") Long id) {
         if (!commentService.getCommentsByAuthorId(id).isEmpty()) {
             return new ResponseEntity<>(commentService.getCommentsByAuthorId(id), HttpStatus.OK);
