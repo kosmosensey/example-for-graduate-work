@@ -6,7 +6,12 @@ import org.springframework.stereotype.Component;
 import java.util.stream.Collectors;
 @Component
 public class CheckRoleService {
-
+    /**
+     Determines whether the authenticated user is an admin or the owner of the Active Directory.
+     @param authentication the authentication object representing the authenticated user
+     @param ownerAd the username of the owner of the Active Directory
+     @return true if the authenticated user is an admin or the owner of the Active Directory, false otherwise
+     */
     public static boolean isAdminOrOwnerAd(Authentication authentication, String ownerAd) {
         boolean isAdmin = authentication.getAuthorities()
                 .stream()
