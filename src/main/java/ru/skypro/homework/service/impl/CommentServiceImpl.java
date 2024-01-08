@@ -29,6 +29,11 @@ public class CommentServiceImpl implements CommentService {
     private final AdRepository adRepository;
     private final CommentMapper commentMapper;
 
+    /**
+     Retrieves the comments for an ad.
+     @param id The ID of the ad.
+     @return The CommentsDto object containing the list of comments.
+     */
     @Override
     public CommentsDto getCommentsAds(Integer id) {
         List<Comment> comment = commentRepository.findByAdPk(id);
@@ -41,6 +46,13 @@ public class CommentServiceImpl implements CommentService {
         return new CommentsDto(commentList.size(), commentList);
     }
 
+    /**
+     Creates a new comment for an ad.
+     @param id The ID of the ad.
+     @param createCommentDto The CreateOrUpdateCommentDto object containing the comment details.
+     @param authentication The authentication object representing the current user.
+     @return The CommentDto object representing the created comment.
+     */
     @Override
     public CommentDto createComment(Integer id,
                                     CreateOrUpdateCommentDto createCommentDto,
@@ -58,13 +70,23 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(comment);
         return commentMapper.commentToCommentDto(comment);
     }
-
+    /**
+     Deletes a comment.
+     @param adId The ID of the ad.
+     @param commentId The ID of the comment.
+     */
     @Override
     public void deleteComment(Integer adId, Integer commentId) {
         Comment comment = commentRepository.findById(commentId);
         commentRepository.delete(comment);
     }
-
+    /**
+     Updates a comment.
+     @param adId The ID of the ad.
+     @param commentId The ID of the comment.
+     @param createCommentDto The CreateOrUpdateCommentDto object containing the updated comment details.
+     @return The CommentDto object representing the updated comment.
+     */
     @Override
     public CommentDto updateComment(Integer adId, Integer commentId, CreateOrUpdateCommentDto createCommentDto) {
         Comment comment = commentRepository.findById(commentId);

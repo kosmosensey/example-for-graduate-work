@@ -32,6 +32,10 @@ public class AdServiceImpl implements AdService {
     private final UserService userService;
     private final CreateOrUpdateAdMapper createOrUpdateAdMapper;
 
+    /**
+     Retrieves all ads.
+     @return The DTO containing the list of all ads.
+     */
     public AdsDto getAllAds() {
         List<AdDto> adList = adRepository.findAll().stream()
                 .map(AdMapper::adToAdDto)
@@ -39,6 +43,15 @@ public class AdServiceImpl implements AdService {
         return new AdsDto(adList.size(), adList);
     }
 
+    /**
+
+     Creates a new ad.
+     @param adDto The DTO containing the ad data.
+     @param image The image file associated with the ad.
+     @param authentication The authentication information of the user creating the ad.
+     @return The DTO representing the created ad.
+     @throws IOException If an error occurs while reading the image file.
+     */
     @Override
     public AdDto createAd(CreateOrUpdateAdDto adDto, MultipartFile image, Authentication authentication) throws IOException {
         User user = userService.getUser(authentication.getName());
@@ -49,6 +62,11 @@ public class AdServiceImpl implements AdService {
         return AdMapper.adToAdDto(adRepository.save(ad));
     }
 
+    /**
+     Retrieves all ads created by the authenticated user.
+     @param authentication The authentication information of the user.
+     @return The DTO containing the list of all ads created by the user.
+     */
     @Override
     public AdsDto getMyAds(Authentication authentication) {
         Integer userId = userService.findByEmail(authentication.getName()).getId();
@@ -59,7 +77,12 @@ public class AdServiceImpl implements AdService {
                 .collect(Collectors.toList());
         return new AdsDto(allMyAds.size(), allMyAds);
     }
-
+    /**
+     Updates or creates the details of an ad.
+     @param id The ID of the ad to update.
+     @param createOrUpdateAdDto The DTO containing the updated ad data.
+     @return The DTO representing the updated ad.
+     */
     @Override
     public AdDto updateAds(Integer id, CreateOrUpdateAdDto createOrUpdateAdDto) {
         Ad ad = adRepository.findAdByPk(id);
@@ -72,7 +95,12 @@ public class AdServiceImpl implements AdService {
         adRepository.save(ad);
         return AdMapper.adToAdDto(ad);
     }
-
+    /**
+     Deletes an ad.
+     @param id The ID of the ad to delete.
+     @param authentication The authentication information of the user attempting to delete the ad.
+     @throws AccessErrorException If the user is not authorized to delete the ad.
+     */
     @Override
     public void deleteAd(Integer id, Authentication authentication) {
         Ad deletedAd = adRepository.findAdByPk(id);
@@ -82,7 +110,11 @@ public class AdServiceImpl implements AdService {
             throw new AccessErrorException();
         }
     }
-
+    /**
+     Retrieves an extended version of an ad.
+     @param id The ID of the ad to retrieve.
+     @return The DTO representing the extended ad.
+     */
     @Override
     public ExtendedAdDto findExtendedAd(Integer id) {
         Ad ad = adRepository.findAdByPk(id);
@@ -91,7 +123,13 @@ public class AdServiceImpl implements AdService {
         }
         return null;
     }
-
+    /**
+     Updates the image of an ad.
+     @param id The ID of the ad to update.
+     @param image The new image file for the ad.
+     @return The byte array representing the updated image data.
+     @throws IOException If an error occurs while reading the image file.
+     */
     @Override
     public byte[] updateImageAd(Integer id, MultipartFile image) throws IOException {
         Ad ad = adRepository.findById(id).orElseThrow(AdNotFoundException::new);
@@ -100,7 +138,12 @@ public class AdServiceImpl implements AdService {
         adRepository.save(ad);
         return ad.getData();
     }
-
+    /**
+     Retrieves the image data for an ad.
+     @param imageId The ID of the ad image to retrieve.
+     @return The byte array representing the image data.
+     @throws IOException If an error occurs while retrieving the image data.
+     */
     @Override
     public byte[] getImage(Integer imageId) throws IOException {
         return adRepository.findAdByPk(imageId).getData();
